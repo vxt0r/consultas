@@ -1,0 +1,19 @@
+{
+    "name": "vitor/phpmailer",
+    "require": {
+        "phpmailer/phpmailer": "^6.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Source\\": "src/",
+            "app\\": "app/",
+            "MF\\": "vendor//MF/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vitor Moreira de Oliveira",
+            "email": "vitormoroli@gmail.com"
+        }
+    ]
+}

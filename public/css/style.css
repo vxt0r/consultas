@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+body{
+    font-family: 'Open Sans', sans-serif;
+    background-color: #E6E6FA;
+}
+
+body,a{
+    color: #696969;
+}
+
+header,.div-link,.card a, p {
+    text-align: center;
+}
+
+main{
+    width: 40%;
+    background-color: #F0F8FF;
+    margin: 1em auto;
+    border-radius: 6px;
+}
+
+.create-card{
+    padding: 0.5em;
+}
+
+form, .card{
+    display: flex;
+    flex-direction: column;
+}
+
+form{
+    width: 70%;
+    margin: 2em auto;
+}
+
+label{
+    margin-bottom: 0.5em;
+}
+
+input{
+    margin-bottom: 1em;
+}
+
+button,.card a{
+    height: 2.5em;
+    margin: 1em auto;
+    color: #fff;
+    cursor: pointer;
+}
+
+button{
+    width: 25%;
+    background-color: #696969;
+    border: none;
+}
+
+.show-cards{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    margin-top: 1em;
+}
+.card{
+    align-items: center;
+    color: #1C1C1C;
+    background-color: #B0C4DE;
+    margin: 1em;
+}
+
+.card a {
+    width: 6em;
+    background-color: #1C1C1C;
+    text-decoration: none;
+}
+.alert{
+    font-weight: bold;
+    color: #FA8072;
+}
