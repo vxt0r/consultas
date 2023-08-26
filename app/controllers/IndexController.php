@@ -7,42 +7,67 @@ use MF\model\Container;
 
 class IndexController extends Action{
 
-    public function index(){
-
-        if(isset($_GET['create'])){
-            $datetime = str_replace('T',' ',$_POST['datetime']);
-            $appointment = Container::getModel('Appointment');
-            $appointment->createAppointment($_POST['email'],$datetime,$_POST['name']);
-            header('location:?show=true');
-        }
-        if(isset($_GET['show'])){
-            $appointment = Container::getModel('Appointment');
-            $this->view->data = $appointment->getAppointments();
-        }
-    
+    public function index()
+    {
         $this->render('index','layout');
+    }
+
+    public function appointment()
+    {
+        if(isset($_GET['action'])){
+            if($_GET['action'] === 'show'){
+                $this->showAppointments();
+            }
+            elseif($_GET['action'] === 'create'){
+                $this->createAppointment();
+            }
+        }
+    }
+
+    private function createAppointment()
+    {
+        $datetime = str_replace('T',' ',$_POST['datetime']);
+        $appointment = Container::getModel('Appointment');
+        $appointment->create($_POST['email'],$datetime,$_POST['name']);
+        header('location:/appointment?action=show');
+    }
+
+    private function showAppointments()
+    {
+        $appointment = Container::getModel('Appointment');
+        $this->view->data = $appointment->getAll();
+        $this->render('appointments','layout');
     }
 
     public function email()
     {
-        if(isset($_GET['action'])){
-            $appointments = Container::getModel('Appointment');
-            $appointment = $appointments->getAppointmentId($_GET['id']);
-            $mailer = Container::getModel('Mailer');
+    
+        $appointments = Container::getModel('Appointment');
+        $appointment = $appointments->getById($_GET['id']);
+        $mailer = Container::getModel('Mailer');
 
-            if($_GET['action'] === 'confirm'){
-                $datetime = explode(' ',$appointment['data_hora']);
-                $datetime[0] = date("d/m/Y",strtotime($datetime[0]));
-                $datetime[1] = substr($datetime[1],0,5);
-                $mailer->sendConfirmEmail($appointment['email_paciente'],$datetime,$appointment['nome_paciente']);
-                $appointments->confirmAppointment($_GET['id']);
-            }
-            if($_GET['action'] === 'cancel'){
-                $mailer->sendCancelEmail($appointment['email_paciente'],$appointment['nome_paciente']);
-                $appointments->removeAppointment($appointment['id']);
-            }
+        if($_GET['action'] === 'confirm'){
+            $this->confirmAppointment($appointments,$appointment,$mailer);
+        }
+        elseif($_GET['action'] === 'cancel'){
+            $this->cancelAppointment($appointments,$appointment,$mailer);
         }
         
-        header('location:/?show=true');
+        header('location:/appointment?action=show');
+    }
+
+    private function confirmAppointment($appointments,$appointment,$mailer)
+    {
+        $datetime = explode(' ',$appointment['data_hora']);
+        $datetime[0] = date("d/m/Y",strtotime($datetime[0]));
+        $datetime[1] = substr($datetime[1],0,5);
+        $mailer->sendConfirmEmail($appointment['email_paciente'],$datetime,$appointment['nome_paciente']);
+        $appointments->confirm($_GET['id']);
+    }
+
+    private function cancelAppointment($appointments,$appointment,$mailer)
+    {
+        $mailer->sendCancelEmail($appointment['email_paciente'],$appointment['nome_paciente']);
+        $appointments->remove($appointment['id']);
     }
 }
