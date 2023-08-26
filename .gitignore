@@ -1,1 +1,5 @@
 app/Config.php
+vendor/composer
+vendor/phpmailer
+vendor/autoload.php
+composer.lock
