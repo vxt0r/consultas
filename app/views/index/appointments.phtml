@@ -1,0 +1,25 @@
+
+<div class="div-link">
+    <a href="/">Criar consulta</a>
+</div>
+
+<?php if(empty($this->view->data)){?>
+    <p>Não há nenhuma consulta agendada.</p>            
+<?php } else { ?>
+
+    <section class="show-cards">
+    <?php foreach($this->view->data as $appointment){ ?>
+        <div class="card">
+            <span><?php echo $appointment['nome_paciente'] ?></span>
+            <span><?php echo (new DateTime($appointment['data_hora']))->format('d/m/Y H:i'); ?></span>
+            <span><?php echo $appointment['email_paciente'] ?></span>
+            <?php if($appointment['confirmada']){ ?>
+                <h3>Confirmada</h3>
+            <?php } else {?>
+                <a href="/email?action=confirm&id=<?php echo $appointment['id']?>">Confirmar</a>
+                <a href="/email?action=cancel&id=<?php echo $appointment['id']?>">Desmarcar</a>
+            <?php } ?>
+        </div>
+        <?php } ?> 
+    </section>
+<?php }?>

@@ -2,53 +2,25 @@
     <h1>Acompanhe suas consultas</h1>
 </header>
 <main>
-    <?php if(isset($_GET['error'])){ 
-                if($_GET['error'] === 'create'){ ?>
-        <p class="alert">Horário indisponível</p>
-    <?php } }?>
 
-    <?php if(isset($_GET['show'])){ ?> 
-        
-        <div class="div-link">
-            <a href="/">Criar consulta</a>
-        </div>
-
-        <?php if(empty($this->view->data)){?>
-            <p>Não há nenhuma consulta agendada.</p>            
-        <?php } else {?>
-        
-        <section class="show-cards">
-        <?php foreach($this->view->data as $appointment){ ?>
-            <div class="card">
-                <span><?php echo $appointment['nome_paciente'] ?></span>
-                <span><?php echo (new DateTime($appointment['data_hora']))->format('d/m/Y H:i'); ?></span>
-                <span><?php echo $appointment['email_paciente'] ?></span>
-                <?php if($appointment['confirmada']){ ?>
-                    <h3>Confirmada</h3>
-                <?php } else {?>
-                    <a href="/email?action=confirm&id=<?php echo $appointment['id']?>">Confirmar</a>
-                    <a href="/email?action=cancel&id=<?php echo $appointment['id']?>">Desmarcar</a>
-                <?php } ?>
-            </div>
-            <?php } ?> 
-        </section>
-
-        <?php } }else { ?>
-        <section class="create-card">
-            <form action="?create=true" method="POST">
-                <label>Nome (Paciente)</label>
-                <input type="text" name="name">
-                <label>Email (Paciente)</label>
-                <input type="email" name="email" id="">
-                <label>Data e hora da consulta</label>
-                <input type="datetime-local" name="datetime">
-                <button>Marcar</button>
-            </form>
-
-            <div class="div-link">
-                <a href="?show=true">Ver consultas agendadas</a>
-            </div>
-        </section>
+    <?php if(isset($_GET['error'])){ ?>
+        <p>Horário Indisponível</p>
     <?php } ?>
+
+    <section class="create-card">
+        <form action="/appointment?action=create" method="POST">
+            <label>Nome (Paciente)</label>
+            <input type="text" name="name">
+            <label>Email (Paciente)</label>
+            <input type="email" name="email" id="">
+            <label>Data e hora da consulta</label>
+            <input type="datetime-local" name="datetime">
+            <button>Marcar</button>
+        </form>
+
+        <div class="div-link">
+            <a href="/appointment?action=show">Ver consultas agendadas</a>
+        </div>
+    </section>
 </main>
 
