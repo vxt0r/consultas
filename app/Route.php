@@ -14,6 +14,12 @@ class Route extends Bootstrap{
             'action' =>  'index'
         );
 
+        $routes['appointments'] = array(
+            'route' => '/appointment',
+            'controller' => 'indexController',
+            'action' =>  'appointment'
+        );
+
         $routes['email'] = array(
             'route' => '/email',
             'controller' => 'indexController',
